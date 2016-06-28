@@ -1,0 +1,12 @@
+TScheduleThread : 5948 | 28/06/2016 | 13:30:35 | Info | Iniciando a aplicação com os seguintes parâmetros: -pathdb 192.168.8.100:/mnt/bases/kiferro/KIFERRO_DEV.FDB -userdb PRIORI -passdb P0112 -reloadtime 5 -log log.txt
+TScheduleThread : 5948 | 28/06/2016 | 13:30:35 | Info | Conectado no servidor e carregado 3 PA
+TScheduleThread : 5948 | 28/06/2016 | 13:30:35 | Info | PA 1: AUT-00000000013 - Teste Gilson Config exec: * * * * 1, Próx exec: 28/06/2016 13:31:00
+TScheduleThread : 5948 | 28/06/2016 | 13:30:35 | Info | PA 2: AUT-00000000500 - Teste Gilson 2 Config exec: * * * * 3, Próx exec: 28/06/2016 13:33:00
+TScheduleThread : 5948 | 28/06/2016 | 13:30:35 | Info | PA 3: AUT-00000000501 - Teste Gilson 3
+TScheduleThread : 5948 | 28/06/2016 | 13:30:40 | Info | Aplicação finalizada
+TScheduleThread : 6292 | 28/06/2016 | 13:36:30 | Info | Iniciando a aplicação com os seguintes parâmetros: -pathdb 192.168.8.100:/mnt/bases/kiferro/KIFERRO_DEV.FDB -userdb PRIORI -passdb P0112 -reloadtime 5 -log log.txt
+TScheduleThread : 6292 | 28/06/2016 | 13:36:31 | Info | Conectado no servidor e carregado 3 PA
+TScheduleThread : 6292 | 28/06/2016 | 13:36:31 | Info | PA 1: AUT-00000000013 - Teste Gilson Config exec: * * * * 1, Próx exec: 28/06/2016 13:37:00
+TScheduleThread : 6292 | 28/06/2016 | 13:36:31 | Info | PA 2: AUT-00000000500 - Teste Gilson 2 Config exec: * * * * 3, Próx exec: 28/06/2016 13:39:00
+TScheduleThread : 6292 | 28/06/2016 | 13:36:31 | Info | PA 3: AUT-00000000501 - Teste Gilson 3
+TScheduleThread : 6292 | 28/06/2016 | 13:36:41 | Info | Aplicação finalizada
