@@ -15,6 +15,7 @@ type
 
     procedure CarregarTasks;
     procedure ExecutarPA(TaskTime : TTaskTime);
+    procedure FinalizarPA(TaskTime : TTaskTime);
   protected
     procedure Execute; override;
   public
@@ -28,7 +29,7 @@ implementation
 
 uses
   System.Classes, Service.ScheduleLoad, System.SysUtils, Service.Exceptions, Service.Thread.Executor,
-  Service.DTO.Pri_PontoEntrada_Agenda;
+  Service.DTO.Pri_PontoEntrada_Agenda {$IFDEF MSWINDOWS}, Winapi.Windows{$ENDIF};
 
 { TScheduleThread }
 
@@ -53,17 +54,8 @@ begin
 
   FLista          := TObjectList<TTaskTime>.Create(False);
   FListaPendentes := TObjectList<TTaskTime>.Create(False);
-
-  try
-    FParametros := TParametros.Create;
-  except
-    on E: EParametros do
-    begin
-      Writeln(E.Message);
-    end;
-  end;
-
-  FLog := TLog.Create(FParametros.LogFile);
+  FParametros     := TParametros.Create;
+  FLog            := TLog.Create(FParametros.LogFile);
 end;
 
 destructor TScheduleThread.Destroy;
@@ -133,14 +125,14 @@ begin
 
         for TaskTime in FLista do
         begin
-          if Assigned(TaskTime.Thread) then
-          begin
-            FLog.Escrever(Self, TTipoLog.Info, Format('O seguinte PA não foi inicado pois sua última execução ainda não finalizou: %s', [TaskTime.Dto.DsPontoEntrada]));
-            Continue;
-          end;
-
           if TaskTime.Executar then
           begin
+            if Assigned(TaskTime.Thread) then
+            begin
+              FLog.Escrever(Self, TTipoLog.Info, Format('O seguinte PA não foi inicado pois sua última execução ainda não finalizou: %s', [TaskTime.Dto.DsPontoEntrada]));
+              Continue;
+            end;
+
             FLog.Escrever(Self, TTipoLog.Info, Format('Iniciado PA: %s', [TaskTime.Dto.DsPontoEntrada]));
             ExecutarPA(TaskTime);
           end;
@@ -161,6 +153,16 @@ begin
       TThread.Sleep(5000);
     end;
 
+    for TaskTime in FLista do
+    begin
+      FinalizarPA(TaskTime);
+    end;
+
+    for TaskTime in FListaPendentes do
+    begin
+      FinalizarPA(TaskTime);
+    end;
+
     FLog.Escrever(Self, TTipoLog.Info, 'Aplicação finalizada');
   except
     on E: EServiceGeneric do
@@ -173,6 +175,21 @@ begin
       FLog.Escrever(Self, TTipoLog.Erro, Format('Ocorreu uma exceção desconhecida:%s%s: %s', [sLineBreak, E.ClassName, E.Message]));
     end;
   end;
+end;
+
+procedure TScheduleThread.FinalizarPA(TaskTime: TTaskTime);
+begin
+  if Assigned(TaskTime.Thread) then
+  begin
+    FLog.Escrever(Self, TTipoLog.Info, Format('Aguardando o seguinte PA finalizar sua execução: %s', [TaskTime.Dto.DsPontoEntrada]));
+    {$IFDEF MSWINDOWS}
+    WaitForSingleObject(TaskTime.Thread.Handle, INFINITE);
+    {$ELSE}
+    TaskTime.Thread.WaitFor; //Existe um bug nas versões antigas do Delphi no WaitFor no Windows quando usado dentro de outra Thread, e a thread a ser chamada é FreeOnTerminate. No Linux não foi testado
+    {$ENDIF}
+  end;
+
+  TaskTime.Free;
 end;
 
 procedure TScheduleThread.OnTerminateThreadTask(Sender: TObject);

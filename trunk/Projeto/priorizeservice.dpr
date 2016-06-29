@@ -64,7 +64,9 @@ begin
       Schedule.WaitFor;
     except
       on E: Exception do
-        Writeln(E.ClassName, ': ', E.Message);
+      begin
+        Writeln(E.Message);
+      end;
     end;
   finally
     System.SysUtils.FreeAndNil(Schedule);

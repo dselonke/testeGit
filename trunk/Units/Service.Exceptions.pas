@@ -23,6 +23,11 @@ type
     constructor Create(const Msg: string);
   end;
 
+  ECompilador = class(EServiceGeneric)
+  public
+    constructor Create(const Msg: string);
+  end;
+
 implementation
 
 uses
@@ -58,6 +63,13 @@ end;
 constructor ECDSUtils.Create(const Msg: string);
 begin
   inherited Create('Exceção no Service.Utils.CDS:' + sLineBreak + Msg);
+end;
+
+{ ECompilador }
+
+constructor ECompilador.Create(const Msg: string);
+begin
+  inherited Create('Ocorreu um erro ao compilar o código-fonte!' + sLineBreak + 'Erro: ' + Msg);
 end;
 
 end.

@@ -89,6 +89,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <Debugger_RunParams>-pathdb &quot;192.168.8.100:/mnt/bases/kiferro/KIFERRO_DEV.FDB&quot; -userdb PRIORI -passdb P0112 -reloadtime 1</Debugger_RunParams>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>

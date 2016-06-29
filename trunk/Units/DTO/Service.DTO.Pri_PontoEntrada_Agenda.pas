@@ -23,13 +23,13 @@ type
   public
     constructor Create;
 
-    property FkPontoEntrada   : Integer     read FFkPontoEntrada write FFkPontoEntrada;
-    property Tipo             : TTipoAgenda read FTipo           write FTipo;
-    property DiaSemana        : String      read FDiaSemana      write FDiaSemana;
-    property Mes              : String      read FMes            write FMes;
-    property Dia              : String      read FDia            write FDia;
-    property Hora             : String      read FHora           write FHora;
-    property Minuto           : String      read FMinuto         write FMinuto;
+    property FkPontoEntrada : Integer     read FFkPontoEntrada write FFkPontoEntrada;
+    property Tipo           : TTipoAgenda read FTipo           write FTipo;
+    property DiaSemana      : String      read FDiaSemana      write FDiaSemana;
+    property Mes            : String      read FMes            write FMes;
+    property Dia            : String      read FDia            write FDia;
+    property Hora           : String      read FHora           write FHora;
+    property Minuto         : String      read FMinuto         write FMinuto;
 
     property CalcDsTipoAgenda    : String    read GetCalcDsTipoAgenda;
     property CalcProximaExecucao : TDateTime read FCalcProximaExecucao write FCalcProximaExecucao;

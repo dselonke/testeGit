@@ -20,7 +20,8 @@ type
 implementation
 
 uses
-  System.SysUtils, UPri_ProgramaAutonomo_Container, UPri_ProgramaAutonomoCompiladorUtils;
+  System.SysUtils, UPri_ProgramaAutonomo_Container, UPri_ProgramaAutonomoCompiladorUtils, Service.DAO.DBConnection,
+  Service.Exceptions;
 
 { TExecutorThread }
 
@@ -36,20 +37,31 @@ procedure TExecutorThread.Execute;
 var
   PriPAContainer       : TPri_ProgramaAutonomo_Container;
   PriPACompiladorUtils : TPri_ProgramaAutonomoCompiladorUtils;
+  DBConnection         : TDBConnection;
 begin
   inherited;
 
   PriPAContainer       := nil;
   PriPACompiladorUtils := nil;
+  DBConnection         := nil;
 
   try
     PriPAContainer       := TPri_ProgramaAutonomo_Container.Create;
     PriPACompiladorUtils := TPri_ProgramaAutonomoCompiladorUtils.Create;
+    DBConnection         := TDBConnection.Create;
 
     PriPAContainer.Codigo_Fonte := FTaskTime.Dto.Codigo_Fonte;
+    PriPAContainer.ConexaoBanco := DBConnection.Connection;
+    PriPACompiladorUtils.Executar(PriPAContainer);
+
+    if not PriPAContainer.CompiladorOutput.ExecucaoSucesso then
+    begin
+      raise ECompilador.Create(PriPAContainer.CompiladorOutput.MensagemExcecao);
+    end;
   finally
     System.SysUtils.FreeAndNil(PriPAContainer);
     System.SysUtils.FreeAndNil(PriPACompiladorUtils);
+    System.SysUtils.FreeAndNil(DBConnection);
   end;
 end;
 

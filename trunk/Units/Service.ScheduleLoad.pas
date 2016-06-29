@@ -88,6 +88,29 @@ begin
       begin
         AListaTaskTime.Remove(TaskTime);
         AListaPendentesTaskTime.Add(TaskTime);
+      end
+      else
+      begin
+        PriPontoEntradaAgendaDTOBusca.FkPontoEntrada := CDSPontosEntrada.Fields[IdxPontoEntrada.PkPontoEntrada].AsInteger;
+
+        CDSUtils.UnirQueryCDS(CDSPontosEntradaAgenda, PriPontoEntradaAgendaDAO.BuscarLista(PriPontoEntradaAgendaDTOBusca));
+
+        if CDSPontosEntradaAgenda.IsEmpty then
+        begin
+          AListaTaskTime.Remove(TaskTime);
+          AListaPendentesTaskTime.Add(TaskTime);
+        end;
+      end;
+    end;
+    {$ENDREGION}
+
+    {$REGION 'Verifica se as Task removidas possuem thread em andamento pra então destruir'}
+    for TaskTime in AListaPendentesTaskTime do
+    begin
+      if not Assigned(TaskTime.Thread) then
+      begin
+        AListaPendentesTaskTime.Remove(TaskTime);
+        TaskTime.Free;
       end;
     end;
     {$ENDREGION}
@@ -153,17 +176,6 @@ begin
       AListaTaskTime.Add(TaskTime);
 
       CDSPontosEntrada.Next;
-    end;
-    {$ENDREGION}
-
-    {$REGION 'Verifica se as Task removidas possuem thread em andamento pra então destruir'}
-    for TaskTime in AListaPendentesTaskTime do
-    begin
-      if not Assigned(TaskTime.Thread) then
-      begin
-        AListaPendentesTaskTime.Remove(TaskTime);
-        TaskTime.Free;
-      end;
     end;
     {$ENDREGION}
   finally

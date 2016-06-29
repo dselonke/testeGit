@@ -67,7 +67,6 @@ end;
 
 destructor TTaskTime.Destroy;
 begin
-  System.SysUtils.FreeAndNil(FThread);
   System.SysUtils.FreeAndNil(FDto);
   System.SysUtils.FreeAndNil(FDtoAgenda);
 
