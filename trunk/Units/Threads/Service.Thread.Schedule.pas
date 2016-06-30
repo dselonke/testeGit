@@ -110,7 +110,7 @@ begin
 
               Msg := Format('PA %d: %s', [FLista.IndexOf(TaskTime) +1, TaskTime.Dto.DsPontoEntrada]);
 
-              if TaskTime.DtoAgenda[0].Tipo = TTipoAgenda.Periodico then
+              if TaskTime.DtoAgenda.First.Tipo = TTipoAgenda.Periodico then
               begin
                 Msg := Msg + Format(' Config exec: %s %s %s %s %s, Próx exec: %s',
                               [TaskTime.DtoAgendaProxima.Mes, TaskTime.DtoAgendaProxima.Dia, TaskTime.DtoAgendaProxima.DiaSemana,
@@ -211,7 +211,7 @@ begin
 
     Msg := Format('Finalizado PA: %s', [TExecutorThread(Sender).TaskTime.Dto.DsPontoEntrada]);
 
-    if TExecutorThread(Sender).TaskTime.DtoAgenda[0].Tipo = TTipoAgenda.Periodico then
+    if TExecutorThread(Sender).TaskTime.DtoAgenda.First.Tipo = TTipoAgenda.Periodico then
     begin
       Msg := Msg + Format(', Próx exec: %s', [DateTimeToStr(TExecutorThread(Sender).TaskTime.ProximaExecucao, TFormatSettings.Create('pt-BR'))]);
     end;

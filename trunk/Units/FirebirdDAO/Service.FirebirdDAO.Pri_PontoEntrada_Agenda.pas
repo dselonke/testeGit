@@ -24,7 +24,8 @@ var
 begin
   Query := PrepararQuery;
 
-  Query.SQL.Add('SELECT PRI_PONTOENTRADA_AGENDA.TIPO,                            '+
+  Query.SQL.Add('SELECT PRI_PONTOENTRADA_AGENDA.PKPONTOENTRADA_AGENDA,           '+
+                '       PRI_PONTOENTRADA_AGENDA.TIPO,                            '+
                 '       PRI_PONTOENTRADA_AGENDA.MES,                             '+
                 '       PRI_PONTOENTRADA_AGENDA.DIA,                             '+
                 '       PRI_PONTOENTRADA_AGENDA.DIASEMANA,                       '+
