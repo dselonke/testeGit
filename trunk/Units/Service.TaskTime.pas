@@ -7,6 +7,17 @@ uses
   System.Generics.Collections, System.Classes;
 
 type
+  TDecodedDateTime = record
+    Ano      : Word;
+    Mes      : Word;
+    Dia      : Word;
+    Hora     : Word;
+    Minuto   : Word;
+    Segundo  : Word;
+    MSegundo : Word;
+    Semana   : Word;
+  end;
+
   TTaskTime = class(TGenericObject)
   private
     FThread           : TGenericThread;
@@ -23,6 +34,8 @@ type
     function GetExecutar : Boolean;
     function GetExecutarPeriodico : Boolean;
     function GetExecutarAgendado : Boolean;
+    function VerificarUltimaExecAgendado(ADtoAgenda : TPri_PontoEntrada_AgendaDTO; ADataHoraAtual : TDecodedDateTime) : Boolean;
+    function VerificarExecAgendado(ADtoAgenda : TPri_PontoEntrada_AgendaDTO; ADataHoraAtual : TDecodedDateTime) : Boolean;
     function RemoverSegundos(const AValor : TDateTime) : TDateTime;
     procedure CarregarMem;
     procedure SalvarMem(ADtoAgenda : TPri_PontoEntrada_AgendaDTO);
@@ -103,47 +116,28 @@ end;
 
 function TTaskTime.GetExecutarAgendado: Boolean;
 var
-  Ano                   : Word;
-  Mes                   : Word;
-  Dia                   : Word;
-  Hora                  : Word;
-  Minuto                : Word;
-  Segundo               : Word;
-  MSegundo              : Word;
   PriPontoEntradaAgenda : TPri_PontoEntrada_AgendaDTO;
+  DhAtual               : TDecodedDateTime;
 begin
   Result            := False;
   FDtoAgendaProxima := nil;
 
-  DecodeDateTime(Now, Ano, Mes, Dia, Hora, Minuto, Segundo, MSegundo);
+  DecodeDateTime(Now, DhAtual.Ano, DhAtual.Mes, DhAtual.Dia, DhAtual.Hora, DhAtual.Minuto, DhAtual.Segundo, DhAtual.MSegundo);
+  DhAtual.Semana := DayOfTheWeek(Date);
 
   for PriPontoEntradaAgenda in DtoAgenda do
   begin
-    if (PriPontoEntradaAgenda.Mes <> '*') and (Mes <> StrToInt(PriPontoEntradaAgenda.Mes)) then
+    if not VerificarExecAgendado(PriPontoEntradaAgenda, DhAtual) then
     begin
       Continue;
     end;
 
-    if (PriPontoEntradaAgenda.Dia <> '*') and (Dia <> StrToInt(PriPontoEntradaAgenda.Dia)) then
+    if not VerificarUltimaExecAgendado(PriPontoEntradaAgenda, DhAtual) then
     begin
       Continue;
     end;
 
-    if (PriPontoEntradaAgenda.DiaSemana <> '*') and (DayOfTheWeek(Date) <> StrToInt(PriPontoEntradaAgenda.DiaSemana)) then
-    begin
-      Continue;
-    end;
-
-    if (PriPontoEntradaAgenda.Hora <> '*') and (Hora <> StrToInt(PriPontoEntradaAgenda.Hora)) then
-    begin
-      Continue;
-    end;
-
-    if (PriPontoEntradaAgenda.Minuto <> '*') and (Minuto <> StrToInt(PriPontoEntradaAgenda.Minuto)) then
-    begin
-      Continue;
-    end;
-
+    SalvarMem(PriPontoEntradaAgenda);
     FDtoAgendaProxima := PriPontoEntradaAgenda;
     Result := True;
   end;
@@ -175,16 +169,10 @@ end;
 
 function TTaskTime.RemoverSegundos(const AValor: TDateTime): TDateTime;
 var
-  Ano      : Word;
-  Mes      : Word;
-  Dia      : Word;
-  Hora     : Word;
-  Minuto   : Word;
-  Segundo  : Word;
-  MSegundo : Word;
+  Valor : TDecodedDateTime;
 begin
-  DecodeDateTime(AValor, Ano, Mes, Dia, Hora, Minuto, Segundo, MSegundo);
-  Result := EncodeDateTime(Ano, Mes, Dia, Hora, Minuto, 0, 0);
+  DecodeDateTime(AValor, Valor.Ano, Valor.Mes, Valor.Dia, Valor.Hora, Valor.Minuto, Valor.Segundo, Valor.MSegundo);
+  Result := EncodeDateTime(Valor.Ano, Valor.Mes, Valor.Dia, Valor.Hora, Valor.Minuto, 0, 0);
 end;
 
 procedure TTaskTime.SalvarMem(ADtoAgenda: TPri_PontoEntrada_AgendaDTO);
@@ -214,6 +202,36 @@ begin
   FArqMem.SaveToFile(FArqMemPath);
 end;
 
+function TTaskTime.VerificarExecAgendado(ADtoAgenda: TPri_PontoEntrada_AgendaDTO; ADataHoraAtual: TDecodedDateTime): Boolean;
+begin
+  Result := True;
+
+  if (ADtoAgenda.Mes <> '*') and (ADataHoraAtual.Mes <> StrToInt(ADtoAgenda.Mes)) then
+  begin
+    Exit(False);
+  end;
+
+  if (ADtoAgenda.Dia <> '*') and (ADataHoraAtual.Dia <> StrToInt(ADtoAgenda.Dia)) then
+  begin
+    Exit(False);
+  end;
+
+  if (ADtoAgenda.DiaSemana <> '*') and (ADataHoraAtual.Semana <> StrToInt(ADtoAgenda.DiaSemana)) then
+  begin
+    Exit(False);
+  end;
+
+  if (ADtoAgenda.Hora <> '*') and (ADataHoraAtual.Hora <> StrToInt(ADtoAgenda.Hora)) then
+  begin
+    Exit(False);
+  end;
+
+  if (ADtoAgenda.Minuto <> '*') and (ADataHoraAtual.Minuto <> StrToInt(ADtoAgenda.Minuto)) then
+  begin
+    Exit(False);
+  end;
+end;
+
 function TTaskTime.VerificarMem(ADtoAgenda: TPri_PontoEntrada_AgendaDTO; out ADataMen: TDateTime): Boolean;
 var
   I     : Integer;
@@ -233,6 +251,43 @@ begin
       ADataMen := StrToDateTimeDef(Linha[1], 0);
       Exit(True);
     end;
+  end;
+end;
+
+function TTaskTime.VerificarUltimaExecAgendado(ADtoAgenda: TPri_PontoEntrada_AgendaDTO; ADataHoraAtual: TDecodedDateTime): Boolean;
+var
+  DataHora : TDateTime;
+  DhMem    : TDecodedDateTime;
+begin
+  Result := False;
+
+  if VerificarMem(ADtoAgenda, DataHora) then
+  begin
+    DecodeDateTime(DataHora, DhMem.Ano, DhMem.Mes, DhMem.Dia, DhMem.Hora, DhMem.Minuto, DhMem.Segundo, DhMem.MSegundo);
+
+    if ADataHoraAtual.Ano <> DhMem.Ano then
+    begin
+      Exit(True);
+    end;
+
+    if ADataHoraAtual.Mes <> DhMem.Mes then
+    begin
+      Exit(True);
+    end;
+
+    if ADataHoraAtual.Dia <> DhMem.Dia then
+    begin
+      Exit(True);
+    end;
+
+    if ADataHoraAtual.Hora <> DhMem.Hora then
+    begin
+      Exit(True);
+    end;
+  end
+  else
+  begin
+    Exit(True);
   end;
 end;
 

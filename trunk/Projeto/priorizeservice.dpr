@@ -25,7 +25,8 @@ uses
   Service.Log in '..\Units\Service.Log.pas',
   Service.FirebirdDAO.Pri_PontoEntrada_Agenda in '..\Units\FirebirdDAO\Service.FirebirdDAO.Pri_PontoEntrada_Agenda.pas',
   Service.DAO.Pri_PontoEntrada_Agenda in '..\Units\DAO\Service.DAO.Pri_PontoEntrada_Agenda.pas',
-  Service.DTO.Pri_PontoEntrada_Agenda in '..\Units\DTO\Service.DTO.Pri_PontoEntrada_Agenda.pas';
+  Service.DTO.Pri_PontoEntrada_Agenda in '..\Units\DTO\Service.DTO.Pri_PontoEntrada_Agenda.pas',
+  Service.InicializarPackages in '..\Units\Service.InicializarPackages.pas';
 
 var
   Schedule : TScheduleThread;

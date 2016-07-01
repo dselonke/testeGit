@@ -68,6 +68,7 @@
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <UsePackages>true</UsePackages>
         <DCC_Define>NOFORMS;$(DCC_Define)</DCC_Define>
         <DCC_UnitSearchPath>..\Compilador\Dcu;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
@@ -123,6 +124,7 @@
         <DCCReference Include="..\Units\FirebirdDAO\Service.FirebirdDAO.Pri_PontoEntrada_Agenda.pas"/>
         <DCCReference Include="..\Units\DAO\Service.DAO.Pri_PontoEntrada_Agenda.pas"/>
         <DCCReference Include="..\Units\DTO\Service.DTO.Pri_PontoEntrada_Agenda.pas"/>
+        <DCCReference Include="..\Units\Service.InicializarPackages.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

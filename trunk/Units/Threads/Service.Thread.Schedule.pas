@@ -75,8 +75,8 @@ begin
   Thread := TExecutorThread.Create(TaskTime);
 
   Thread.OnTerminate := OnTerminateThreadTask;
+  TaskTime.Thread    := Thread;
   Thread.Start;
-  TaskTime.Thread := Thread;
 end;
 
 procedure TScheduleThread.Execute;
