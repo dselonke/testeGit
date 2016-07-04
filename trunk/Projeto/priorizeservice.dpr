@@ -26,7 +26,9 @@ uses
   Service.FirebirdDAO.Pri_PontoEntrada_Agenda in '..\Units\FirebirdDAO\Service.FirebirdDAO.Pri_PontoEntrada_Agenda.pas',
   Service.DAO.Pri_PontoEntrada_Agenda in '..\Units\DAO\Service.DAO.Pri_PontoEntrada_Agenda.pas',
   Service.DTO.Pri_PontoEntrada_Agenda in '..\Units\DTO\Service.DTO.Pri_PontoEntrada_Agenda.pas',
-  Service.InicializarPackages in '..\Units\Service.InicializarPackages.pas';
+  Service.InicializarPackages in '..\Units\Service.InicializarPackages.pas',
+  fs_iclassesrtti in '..\Units\FastScript\fs_iclassesrtti.pas',
+  fs_idbrtti in '..\Units\FastScript\fs_idbrtti.pas';
 
 var
   Schedule : TScheduleThread;
