@@ -68,7 +68,6 @@
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <UsePackages>true</UsePackages>
         <DCC_Define>NOFORMS;$(DCC_Define)</DCC_Define>
         <DCC_UnitSearchPath>..\Compilador\Dcu;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>

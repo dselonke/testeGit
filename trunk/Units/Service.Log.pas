@@ -22,7 +22,7 @@ type
 implementation
 
 uses
-  {$IFDEF MSWINDOWS}Winapi.Windows,{$ENDIF} System.SysUtils, UPri_CaracterUtils, System.TypInfo;
+  {$IFDEF MSWINDOWS}Winapi.Windows,{$ENDIF} System.SysUtils, UPri_CaracterUtils, System.TypInfo, Service.Thread.Generic;
 
 { TLog }
 
@@ -43,6 +43,7 @@ var
   PriCaracterUtils : TPri_CaracterUtils;
   FormatSettings   : TFormatSettings;
   Arq              : TextFile;
+  ThreadId         : String;
 begin
   PriCaracterUtils := nil;
   FormatSettings   := TFormatSettings.Create('pt-BR');
@@ -50,9 +51,17 @@ begin
   try
     PriCaracterUtils := TPri_CaracterUtils.Create;
 
+    if AObject is TGenericThread then
+    begin
+      ThreadId := PriCaracterUtils.PreencherString(IntToStr(TGenericThread(AObject).ThreadID), 4, TTipoPreencher.tpEspaco, TTipoAlinhar.taEsquerda)
+    end
+    else
+    begin
+      ThreadId := PriCaracterUtils.PreencherString(IntToStr(GetCurrentThreadId), 4, TTipoPreencher.tpEspaco, TTipoAlinhar.taEsquerda)
+    end;
+
     Texto := PriCaracterUtils.PreencherString(AObject.ClassName, 16, TTipoPreencher.tpEspaco, TTipoAlinhar.taEsquerda) + ': '
-             + PriCaracterUtils.PreencherString(IntToStr(GetCurrentThreadId), 4, TTipoPreencher.tpEspaco, TTipoAlinhar.taEsquerda)
-             + SEPARADOR + DateToStr(Now, FormatSettings) + SEPARADOR + TimeToStr(Time, FormatSettings) + SEPARADOR
+             + ThreadId + SEPARADOR + DateToStr(Now, FormatSettings) + SEPARADOR + TimeToStr(Time, FormatSettings) + SEPARADOR
              + GetEnumName(TypeInfo(TTipoLog), Integer(Tipo)) + SEPARADOR + Msg;
 
     Writeln(Texto);
