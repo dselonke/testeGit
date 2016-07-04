@@ -53,12 +53,14 @@ begin
 
     if AObject is TGenericThread then
     begin
-      ThreadId := PriCaracterUtils.PreencherString(IntToStr(TGenericThread(AObject).ThreadID), 4, TTipoPreencher.tpEspaco, TTipoAlinhar.taEsquerda)
+      ThreadId := IntToStr(TGenericThread(AObject).ThreadID);
     end
     else
     begin
-      ThreadId := PriCaracterUtils.PreencherString(IntToStr(GetCurrentThreadId), 4, TTipoPreencher.tpEspaco, TTipoAlinhar.taEsquerda)
+      ThreadId := IntToStr(GetCurrentThreadId);
     end;
+
+    ThreadId := PriCaracterUtils.PreencherString(ThreadId, 4, TTipoPreencher.tpEspaco, TTipoAlinhar.taEsquerda);
 
     Texto := PriCaracterUtils.PreencherString(AObject.ClassName, 16, TTipoPreencher.tpEspaco, TTipoAlinhar.taEsquerda) + ': '
              + ThreadId + SEPARADOR + DateToStr(Now, FormatSettings) + SEPARADOR + TimeToStr(Time, FormatSettings) + SEPARADOR
