@@ -214,7 +214,10 @@ begin
         end;
       end;
 
-      ListaRemoverAgendas.Clear;
+      if TaskTime.DtoAgenda.Count = 0 then
+      begin
+        TaskTime.TaskNova := True;
+      end;
 
       CDSPontosEntradaAgenda.First;
       while not CDSPontosEntradaAgenda.Eof do

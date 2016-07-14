@@ -42,7 +42,7 @@ type
     function VerificarMem(ADtoAgenda : TPri_PontoEntrada_AgendaDTO; out ADataMen : TDateTime) : Boolean;
   public
     property Thread           : TGenericThread                           read FThread           write FThread;
-    property TaskNova         : Boolean                                  read FTaskNova;
+    property TaskNova         : Boolean                                  read FTaskNova         write FTaskNova;
     property Dto              : TPri_PontoEntradaDTO                     read FDto;
     property DtoAgenda        : TObjectList<TPri_PontoEntrada_AgendaDTO> read FDtoAgenda;
     property DtoAgendaProxima : TPri_PontoEntrada_AgendaDTO              read FDtoAgendaProxima;
