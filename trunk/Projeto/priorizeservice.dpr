@@ -61,6 +61,7 @@ begin
     try
       {$IFDEF MSWINDOWS}
       SetConsoleCtrlHandler(@ConsoleCtrlHandler, True);
+      ReportMemoryLeaksOnShutdown := DebugHook <> 0;
       {$ENDIF}
 
       Schedule := TScheduleThread.Create;
