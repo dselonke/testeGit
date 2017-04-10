@@ -1,0 +1,1 @@
+priorizeservice.exe -pathdb "192.168.8.100:/mnt/bases/kiferro/KIFERRO_DEV.FDB" -userdb PRIORI -passdb P0112 -reloadtime 5 -log log.txt
