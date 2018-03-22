@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{AC62158D-0DEA-4654-AFCA-3C7AEB8AF969}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="priorizeservice.dproj">
+            <Dependencies>..\Compilador\Projeto\PriCompilador.dproj</Dependencies>
+        </Projects>
+        <Projects Include="..\Compilador\Projeto\PriCompilador.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="priorizeservice" DependsOnTargets="PriCompilador">
+        <MSBuild Projects="priorizeservice.dproj"/>
+    </Target>
+    <Target Name="priorizeservice:Clean" DependsOnTargets="PriCompilador:Clean">
+        <MSBuild Projects="priorizeservice.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="priorizeservice:Make" DependsOnTargets="PriCompilador:Make">
+        <MSBuild Projects="priorizeservice.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="PriCompilador">
+        <MSBuild Projects="..\Compilador\Projeto\PriCompilador.dproj"/>
+    </Target>
+    <Target Name="PriCompilador:Clean">
+        <MSBuild Projects="..\Compilador\Projeto\PriCompilador.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PriCompilador:Make">
+        <MSBuild Projects="..\Compilador\Projeto\PriCompilador.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="priorizeservice;PriCompilador"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="priorizeservice:Clean;PriCompilador:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="priorizeservice:Make;PriCompilador:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
