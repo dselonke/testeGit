@@ -1,1 +1,1 @@
-priorizeservice.exe -pathdb "192.168.8.100:/mnt/bases/kiferro/KIFERRO_DEV.FDB" -userdb PRIORI -passdb P0112 -reloadtime 5 -log log.txt
+priorizeservice.exe -pathdb "192.168.8.100:/mnt/bases/autorize/AUTORIZE.FDB" -userdb PRIORI -passdb P0112 -reloadtime 1 -log log.txt
