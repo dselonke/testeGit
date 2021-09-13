@@ -3,12 +3,12 @@ unit Service.FirebirdDAO.Pri_PontoEntrada_Agenda;
 interface
 
 uses
-  UPri_FirebirdDAO, UPri_GenericDTO, Data.SqlExpr;
+  UPri_FirebirdDAO, UPri_GenericDTO,  FireDAC.Comp.Client;
 
 type
   TPri_PontoEntrada_AgendaFirebirdDAO = class(TPri_FirebirdDAO)
   published
-    function BuscarLista(Dto : TPri_GenericDTO) : TSQLQuery;
+    function BuscarLista(Dto : TPri_GenericDTO) : TFDQuery;
   end;
 
 implementation
@@ -18,9 +18,9 @@ uses
 
 { TPri_PontoEntrada_AgendaFirebirdDAO }
 
-function TPri_PontoEntrada_AgendaFirebirdDAO.BuscarLista(Dto: TPri_GenericDTO): TSQLQuery;
+function TPri_PontoEntrada_AgendaFirebirdDAO.BuscarLista(Dto: TPri_GenericDTO): TFDQuery;
 var
-  Query : TSQLQuery;
+  Query : TFDQuery;
 begin
   Query := PrepararQuery;
 

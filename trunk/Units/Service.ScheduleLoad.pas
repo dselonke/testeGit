@@ -185,7 +185,7 @@ begin
         TaskTime.Dto.PkPontoEntrada := CDSPontosEntrada.Fields[IdxPontoEntrada.PkPontoEntrada].AsInteger;
       end;
 
-      TaskTime.Dto.Codigo_Fonte   := CDSPontosEntrada.Fields[IdxPontoEntrada.CodigoFonte].AsString;
+      TaskTime.Dto.Codigo_Fonte   := StringReplace(CDSPontosEntrada.Fields[IdxPontoEntrada.CodigoFonte].AsString, 'TSQLQuery', 'TFDQuery', [] );
       TaskTime.Dto.DsPontoEntrada := CDSPontosEntrada.Fields[IdxPontoEntrada.DsPontoEntrada].AsString;
 
       IdxPontoEntradaAgenda.PkPontoEntrada_Agenda := CDSPontosEntradaAgenda.FieldByName('PKPONTOENTRADA_AGENDA').Index;
